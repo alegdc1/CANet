@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="af1aaac6-481e-4911-8aec-1c1db9e2fea5" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
+    </configs>
+  </component>
+</project>

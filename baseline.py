@@ -27,8 +27,8 @@ from sklearn.preprocessing import label_binarize
 from tensorboardX import SummaryWriter
 
 model_names = sorted(name for name in models.__dict__
-    if name.islower() and not name.startswith("__")
-    and callable(models.__dict__[name]))
+                     if name.islower() and not name.startswith("__")
+                     and callable(models.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',
@@ -79,7 +79,6 @@ parser.add_argument("--crosspatialCBAM", action="store_true")
 parser.add_argument("--adam", action="store_true")
 parser.add_argument("--choice", default="", type=str)
 
-
 parser.add_argument("--net_type", default="regular", type=str)
 parser.add_argument("--channels", default=109, type=int)
 parser.add_argument("--nodes", default=32, type=int)
@@ -100,22 +99,26 @@ parser.add_argument("--lambda_value", default=0.25, type=float)
 #                     help='momentum')
 
 
-
 best_acc1 = 0
 best_auc = 0
 best_accdr = 0
 minimum_loss = 1.0
 count = 0
 
+
 def count_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+
 def main():
     args = parser.parse_args()
 
     main_worker(args.gpu, args)
 
+
 def worker_init_fn(worker_id):
     random.seed(1 + worker_id)
+
 
 def main_worker(gpu, args):
     global best_acc1
@@ -124,7 +127,6 @@ def main_worker(gpu, args):
     global count
     global best_accdr
     args.gpu = gpu
-
 
     if not os.path.exists(args.model_dir):
         os.makedirs(args.model_dir)
@@ -135,11 +137,11 @@ def main_worker(gpu, args):
     if args.arch == "resnet50":
         from models.resnet50 import resnet50
         model = resnet50(num_classes=args.num_class, multitask=args.multitask, liu=args.liu,
-                 chen=args.chen, CAN_TS=args.CAN_TS, crossCBAM=args.crossCBAM,
-                         crosspatialCBAM = args.crosspatialCBAM,  choice=args.choice)
+                         chen=args.chen, CAN_TS=args.CAN_TS, crossCBAM=args.crossCBAM,
+                         crosspatialCBAM=args.crosspatialCBAM, choice=args.choice)
 
     if args.pretrained:
-        print ("==> Load pretrained model")
+        print("==> Load pretrained model")
         model_dict = model.state_dict()
         pretrain_path = {"resnet50": "pretrain/resnet50-19c8e357.pth",
                          "resnet34": "pretrain/resnet34-333f7ec4.pth",
@@ -165,19 +167,19 @@ def main_worker(gpu, args):
         optimizer = torch.optim.Adam(model.parameters(), args.base_lr, weight_decay=args.weight_decay)
     else:
         optimizer = torch.optim.SGD(model.parameters(), args.base_lr,
-                                momentum=args.momentum,
-                                weight_decay=args.weight_decay)
+                                    momentum=args.momentum,
+                                    weight_decay=args.weight_decay)
 
     # optionally resume from a checkpoint
     if args.resume:
         if os.path.isfile(args.resume):
             print("=> loading checkpoint '{}'".format(args.resume))
-            checkpoint = torch.load(args.resume,  map_location={'cuda:4':'cuda:0'})
+            checkpoint = torch.load(args.resume, map_location={'cuda:4': 'cuda:0'})
             # args.start_epoch = checkpoint['epoch']
 
             #  load partial weights
             if not args.evaluate:
-                print ("load partial weights")
+                print("load partial weights")
                 model_dict = model.state_dict()
                 pretrained_dict = {k: v for k, v in checkpoint['state_dict'].items() if k in model_dict}
                 model_dict.update(pretrained_dict)
@@ -193,25 +195,24 @@ def main_worker(gpu, args):
             print("=> no checkpoint found at '{}'".format(args.resume))
             exit(0)
 
-
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
-    size  = 224
+    size = 224
     tra = transforms.Compose([
-                transforms.Resize(256),
-                transforms.RandomResizedCrop(size),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                # transforms.RandomRotation(90),
-                # transforms.ColorJitter(0.05, 0.05, 0.05, 0.05),
-                transforms.ToTensor(),
-                normalize,
-            ])
+        transforms.Resize(256),
+        transforms.RandomResizedCrop(size),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomVerticalFlip(),
+        # transforms.RandomRotation(90),
+        # transforms.ColorJitter(0.05, 0.05, 0.05, 0.05),
+        transforms.ToTensor(),
+        normalize,
+    ])
     tra_test = transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            normalize])
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        normalize])
 
     # tra = transforms.Compose([
     #     transforms.Resize(350),
@@ -255,10 +256,10 @@ def main_worker(gpu, args):
     elif args.dataset == "kaggle":
         from datasets.kaggle import traindataset
     else:
-        print ("no dataset")
+        print("no dataset")
         exit(0)
 
-    val_dataset = traindataset(root=args.data, mode = 'val',
+    val_dataset = traindataset(root=args.data, mode='val',
                                transform=tra_test, num_class=args.num_class,
                                multitask=args.multitask, args=args)
 
@@ -272,7 +273,7 @@ def main_worker(gpu, args):
 
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True,
-            num_workers=args.workers, pin_memory=True,worker_init_fn=worker_init_fn)
+        num_workers=args.workers, pin_memory=True, worker_init_fn=worker_init_fn)
 
     if args.evaluate:
         a = time.time()
@@ -280,28 +281,27 @@ def main_worker(gpu, args):
         savedir = args.resume.replace(args.resume.split("/")[-1], "")
         # savedir = "./"
         if not args.multitask:
-            acc, auc, precision_dr, recall_dr, f1score_dr  = validate(val_loader, model, args)
+            acc, auc, precision_dr, recall_dr, f1score_dr = validate(val_loader, model, args)
             result_list = [acc, auc, precision_dr, recall_dr, f1score_dr]
-            print ("acc, auc, precision, recall, f1", acc, auc, precision_dr, recall_dr, f1score_dr)
+            print("acc, auc, precision, recall, f1", acc, auc, precision_dr, recall_dr, f1score_dr)
             save_result_txt(savedir, result_list)
             print("time", time.time() - a)
             return
         else:
             acc_dr, acc_dme, acc_joint, other_results, se, sp = validate(val_loader, model, args)
-            print ("acc_dr, acc_dme, acc_joint", acc_dr, acc_dme, acc_joint)
-            print ("auc_dr, auc_dme, precision_dr, precision_dme, recall_dr, recall_dme, f1score_dr, f1score_dme",
-                   other_results)
-            print ("se, sp", se, sp)
+            print("acc_dr, acc_dme, acc_joint", acc_dr, acc_dme, acc_joint)
+            print("auc_dr, auc_dme, precision_dr, precision_dme, recall_dr, recall_dme, f1score_dr, f1score_dme",
+                  other_results)
+            print("se, sp", se, sp)
             result_list = [acc_dr, acc_dme, acc_joint]
             result_list += other_results
             result_list += [se, sp]
             save_result_txt(savedir, result_list)
 
-            print ("time", time.time()-a)
+            print("time", time.time() - a)
             return
 
-
-    writer = SummaryWriter("runs/"+args.model_dir.split("/")[-1])
+    writer = SummaryWriter("runs/" + args.model_dir.split("/")[-1])
     writer.add_text('Text', str(args))
     #
     from lr_scheduler import LRScheduler
@@ -323,12 +323,14 @@ def main_worker(gpu, args):
                 writer.add_scalar("Val auc_dr", auc_dr, epoch)
                 is_best = acc_dr >= best_acc1
                 best_acc1 = max(acc_dr, best_acc1)
+                print("epoch {0}: accuracy: {1}\t auc: {2}".format(epoch, acc_dr, auc_dr))
             elif not args.multitask:
                 acc, auc, precision, recall, f1 = validate(val_loader, model, args)
                 writer.add_scalar("Val acc_dr", acc, epoch)
                 writer.add_scalar("Val auc_dr", auc, epoch)
                 is_best = auc >= best_acc1
                 best_acc1 = max(auc, best_acc1)
+                print("epoch {0}: accuracy: {1}\t auc: {2}".format(epoch, acc, auc))
             else:
                 acc_dr, acc_dme, joint_acc, other_results, se, sp = validate(val_loader, model, args)
                 writer.add_scalar("Val acc_dr", acc_dr, epoch)
@@ -344,9 +346,10 @@ def main_worker(gpu, args):
 
                 is_best_acc = acc_dr >= best_accdr
                 best_accdr = max(acc_dr, best_accdr)
+                print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme))
 
 
-def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer,  args):
+def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -362,14 +365,12 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
         writer.add_scalar("lr", lr, epoch)
 
         if args.gpu is not None:
-            input = input.cuda(args.gpu, non_blocking = True)
+            input = input.cuda(args.gpu, non_blocking=True)
 
         if args.multitask:
-            target = [item.cuda(args.gpu, non_blocking = True) for item in target]
+            target = [item.cuda(args.gpu, non_blocking=True) for item in target]
         else:
-            target = target.cuda(args.gpu, non_blocking = True)
-
-
+            target = target.cuda(args.gpu, non_blocking=True)
 
         # compute output
         output = model(input)
@@ -379,7 +380,7 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
             if args.crossCBAM:
                 loss3 = criterion(output[2], target[0])
                 loss4 = criterion(output[3], target[1])
-                loss = (loss1 + loss2 + args.lambda_value *loss3 + args.lambda_value * loss4)
+                loss = (loss1 + loss2 + args.lambda_value * loss3 + args.lambda_value * loss4)
             else:
                 loss = (loss1 + loss2)
         else:
@@ -392,15 +393,18 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
         loss.backward()
         optimizer.step()
 
-
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
 
     return losses.avg
+
+
 from sklearn.metrics import confusion_matrix
 import scipy.misc
 from skimage.transform import resize
+
+
 def validate(val_loader, model, args):
     # switch to evaluate mode
     model.eval()
@@ -452,7 +456,7 @@ def validate(val_loader, model, args):
         all_output = [item for sublist in all_output for item in sublist]
 
         if args.num_class == 2:
-            acc = accuracy_score(all_target, np.argmax(all_output,axis=1))
+            acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
             auc = roc_auc_score(all_target, [item[1] for item in all_output])
             precision_dr = precision_score(all_target, np.argmax(all_output, axis=1))
             recall_dr = recall_score(all_target, np.argmax(all_output, axis=1))
@@ -471,7 +475,7 @@ def validate(val_loader, model, args):
         all_target_dme = [item for sublist in all_target_dme for item in sublist]
         all_output_dme = [item for sublist in all_output_dme for item in sublist]
         # acc
-        acc_dr = accuracy_score(all_target, np.argmax(all_output,axis=1))
+        acc_dr = accuracy_score(all_target, np.argmax(all_output, axis=1))
         acc_dme = accuracy_score(all_target_dme, np.argmax(all_output_dme, axis=1))
 
         # joint acc
@@ -481,10 +485,10 @@ def validate(val_loader, model, args):
 
         # auc
         if args.dataset == "missidor":
-            auc_dr  = roc_auc_score(all_target, [item[1] for item in all_output])
+            auc_dr = roc_auc_score(all_target, [item[1] for item in all_output])
         else:
-            auc_dr = multi_class_auc(all_target, all_output, num_c = 5)
-        auc_dme = multi_class_auc(all_target_dme, all_output_dme, num_c = 3)
+            auc_dr = multi_class_auc(all_target, all_output, num_c=5)
+        auc_dme = multi_class_auc(all_target_dme, all_output_dme, num_c=3)
 
         # precision
         if args.dataset == "missidor":
@@ -497,7 +501,7 @@ def validate(val_loader, model, args):
         if args.dataset == "missidor":
             recall_dr = recall_score(all_target, np.argmax(all_output, axis=1))
         else:
-            recall_dr  = recall_score(all_target, np.argmax(all_output, axis=1), average="macro")
+            recall_dr = recall_score(all_target, np.argmax(all_output, axis=1), average="macro")
         recall_dme = recall_score(all_target_dme, np.argmax(all_output_dme, axis=1), average="macro")
 
         # f1_score
@@ -511,32 +515,34 @@ def validate(val_loader, model, args):
         sensitivity1 = cm1[0, 0] / (cm1[0, 0] + cm1[0, 1])
         specificity1 = cm1[1, 1] / (cm1[1, 0] + cm1[1, 1])
 
-
         return acc_dr, acc_dme, joint_acc, \
-               [auc_dr, auc_dme, precision_dr, precision_dme, recall_dr, recall_dme, f1score_dr, f1score_dme],\
+               [auc_dr, auc_dme, precision_dr, precision_dme, recall_dr, recall_dme, f1score_dr, f1score_dme], \
                sensitivity1, specificity1
+
 
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""
     e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum(axis=0) # only difference
+    return e_x / e_x.sum(axis=0)  # only difference
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', save_dir= 'file'):
 
+def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', save_dir='file'):
     root = save_dir + "/"
     if not os.path.exists(root):
         os.makedirs(root)
-    torch.save(state, root+filename)
+    torch.save(state, root + filename)
 
 
-def save_result2txt(savedir, all_output_dme, all_output,all_target_dme,all_target):
-    np.savetxt(savedir+"/output_dme.txt", all_output_dme, fmt='%.4f')
-    np.savetxt(savedir+"/output_dr.txt", all_output, fmt='%.4f')
-    np.savetxt(savedir+"/target_dme.txt", all_target_dme)
-    np.savetxt(savedir+"/target_dr.txt", all_target)
+def save_result2txt(savedir, all_output_dme, all_output, all_target_dme, all_target):
+    np.savetxt(savedir + "/output_dme.txt", all_output_dme, fmt='%.4f')
+    np.savetxt(savedir + "/output_dr.txt", all_output, fmt='%.4f')
+    np.savetxt(savedir + "/target_dme.txt", all_target_dme)
+    np.savetxt(savedir + "/target_dr.txt", all_target)
+
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
+
     def __init__(self):
         self.reset()
 
@@ -552,8 +558,8 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-def multi_class_auc(all_target, all_output, num_c = None):
 
+def multi_class_auc(all_target, all_output, num_c=None):
     all_output = np.stack(all_output)
     all_target = label_binarize(all_target, classes=list(range(0, num_c)))
     auc_sum = []
@@ -569,12 +575,14 @@ def multi_class_auc(all_target, all_output, num_c = None):
 
     return auc
 
+
 def adjust_learning_rate(optimizer, epoch, args):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     lr = args.lr * (0.1 ** (epoch // args.decay_epoch))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
     return lr
+
 
 def accuracy(output, target, topk=(1,)):
     """Computes the accuracy over the k top predictions for the specified values of k"""
@@ -608,14 +616,12 @@ def one_hot_embedding(labels, num_classes):
     return y[labels].cuda()
 
 
-
-
 def save_result_txt(savedir, result):
-
     with open(savedir + '/result.txt', 'w') as f:
         for item in result:
             f.write("%.8f\n" % item)
         f.close()
+
 
 if __name__ == '__main__':
     main()

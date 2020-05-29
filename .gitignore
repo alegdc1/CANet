@@ -1,1 +1,3 @@
 data/Base*
+pretrain/*
+__pycache__

@@ -26,11 +26,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfea584b-0aad-4cc2-b742-1001737161ee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CANet-TMI19.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CANet-TMI19.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/baseline.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/messidor_scripts/train_fold.sh" beforeDir="false" afterPath="$PROJECT_DIR$/messidor_scripts/train_fold.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,7 +85,7 @@
       <option name="presentableId" value="Default" />
       <updated>1576044115049</updated>
       <workItem from="1584938381910" duration="8105000" />
-      <workItem from="1590767640801" duration="2865000" />
+      <workItem from="1590767640801" duration="4249000" />
     </task>
     <servers />
   </component>

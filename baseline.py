@@ -278,8 +278,8 @@ def main_worker(gpu, args):
     if args.evaluate:
         a = time.time()
         # savedir = args.resume.replace("model_converge.pth.tar","")
-        savedir = args.resume.replace(args.resume.split("/")[-1], "")
-        # savedir = "./"
+        # savedir = args.resume.replace(args.resume.split("/")[-1], "")
+        savedir = "./"
         if not args.multitask:
             acc, auc, precision_dr, recall_dr, f1score_dr = validate(val_loader, model, args)
             result_list = [acc, auc, precision_dr, recall_dr, f1score_dr]

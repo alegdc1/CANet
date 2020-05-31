@@ -4,7 +4,7 @@
 #$ -j y
 #$ -cwd
 #$ -l gpu=1
-#$ -l h_vmem=40G
+#$ -l h_vmem=80G
 source /itet-stor/garciaal/net_scratch/conda/etc/profile.d/conda.sh
 
 # From here, it's just what you executed in qrsh

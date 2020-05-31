@@ -1,0 +1,30 @@
+Use GPU: 0 for training
+==> Load pretrained model
+    Total params: 29.03M
+foldname fold1
+=> Total Test:  120  Multi-Task images 
+foldname fold1
+=> Total Train:  1080  Multi-Task images 
+epoch 0: accuracy: 0.8166666666666667	 acc_dme: 0.8
+/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/sklearn/metrics/_classification.py:1272: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+epoch 20: accuracy: 0.8583333333333333	 acc_dme: 0.8583333333333333
+/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/sklearn/metrics/_classification.py:1272: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+epoch 40: accuracy: 0.9166666666666666	 acc_dme: 0.825
+/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/sklearn/metrics/_classification.py:1272: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+epoch 60: accuracy: 0.9333333333333333	 acc_dme: 0.85
+/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/sklearn/metrics/_classification.py:1272: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+epoch 80: accuracy: 0.925	 acc_dme: 0.8666666666666667
+epoch 100: accuracy: 0.9333333333333333	 acc_dme: 0.9
+epoch 120: accuracy: 0.925	 acc_dme: 0.8916666666666667
+epoch 140: accuracy: 0.9416666666666667	 acc_dme: 0.9
+epoch 160: accuracy: 0.95	 acc_dme: 0.9083333333333333
+epoch 180: accuracy: 0.9416666666666667	 acc_dme: 0.925
+epoch 200: accuracy: 0.9583333333333334	 acc_dme: 0.925
+epoch 220: accuracy: 0.9583333333333334	 acc_dme: 0.9166666666666666
+epoch 240: accuracy: 0.9416666666666667	 acc_dme: 0.9333333333333333
+epoch 260: accuracy: 0.95	 acc_dme: 0.9166666666666666
+epoch 280: accuracy: 0.95	 acc_dme: 0.925

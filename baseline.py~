@@ -346,8 +346,8 @@ def main_worker(gpu, args):
 
                 is_best_acc = acc_dr >= best_accdr
                 best_accdr = max(acc_dr, best_accdr)
-                print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme)) 
-                save_checkpoint(model.state_dict(), is_best_acc, filename='checkpoint.pth.tar', save_dir='file')
+                print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme))
+
 
 def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args):
     batch_time = AverageMeter()

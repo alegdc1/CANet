@@ -1,0 +1,10 @@
+Use GPU: 0 for training
+==> Load pretrained model
+    Total params: 29.03M
+foldname fold1
+=> Total Test:  120  Multi-Task images 
+foldname fold1
+=> Total Train:  1080  Multi-Task images 
+epoch 0: accuracy: 0.6416666666666667	 acc_dme: 0.7666666666666667
+/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/sklearn/metrics/_classification.py:1272: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))

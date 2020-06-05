@@ -1,0 +1,23 @@
+THCudaCheck FAIL file=/opt/conda/conda-bld/pytorch_1565287148058/work/torch/csrc/cuda/Module.cpp line=37 error=10 : invalid device ordinal
+Use GPU: 8 for training
+==> Load pretrained model
+Traceback (most recent call last):
+  File "baseline.py", line 627, in <module>
+    main()
+  File "baseline.py", line 116, in main
+    main_worker(args.gpu, args)
+  File "baseline.py", line 159, in main_worker
+    torch.cuda.set_device(args.gpu)
+  File "/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/torch/cuda/__init__.py", line 281, in set_device
+    torch._C._cuda_setDevice(device)
+RuntimeError: cuda runtime error (10) : invalid device ordinal at /opt/conda/conda-bld/pytorch_1565287148058/work/torch/csrc/cuda/Module.cpp:37
+Traceback (most recent call last):
+  File "average_result.py", line 31, in <module>
+    metrics= np.loadtxt(filelist[i] + "/result.txt", dtype=float)
+  File "/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/numpy/lib/npyio.py", line 962, in loadtxt
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+  File "/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/numpy/lib/_datasource.py", line 266, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+  File "/itet-stor/garciaal/net_scratch/conda_envs/cutmix/lib/python3.6/site-packages/numpy/lib/_datasource.py", line 624, in open
+    raise IOError("%s not found." % path)
+OSError: exp/MESSIDOR/multi_CAN_lamda25_noshare_wpre_simpleaug_10fold2_1000/result.txt not found.

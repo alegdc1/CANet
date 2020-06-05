@@ -7,8 +7,8 @@ parser.add_argument('--filename', default="",type=str)
 args = parser.parse_args()
 
 #
-# filelist = ["10fold1_1000",
-filelist=[
+filelist = ["10fold1_1000"]
+"""filelist=[
     "1_1000",
     "2_1000",
 "3_1000",
@@ -18,7 +18,7 @@ filelist=[
 "7_1000",
 "8_1000",
 "9_1000",
-"10_1000"]
+"10_1000"]"""
 
 
 filelist = [args.filename + item for item in filelist]

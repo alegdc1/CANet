@@ -27,7 +27,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bfea584b-0aad-4cc2-b742-1001737161ee" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/average_result.py" beforeDir="false" afterPath="$PROJECT_DIR$/average_result.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/baseline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/messidor_scripts/eval_fold.sh" beforeDir="false" afterPath="$PROJECT_DIR$/messidor_scripts/eval_fold.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/resnet50.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/resnet50.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +121,7 @@
       <workItem from="1590767640801" duration="10282000" />
       <workItem from="1591003097855" duration="7617000" />
       <workItem from="1591260815824" duration="11470000" />
+      <workItem from="1591800122619" duration="13098000" />
     </task>
     <servers />
   </component>
@@ -138,11 +141,12 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="732" y="-949" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590774047069">
-      <screen x="384" y="-1080" width="1920" height="1040" />
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591864439513">
+      <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920/384.-1080.1920.1040@0.0.1707.920" timestamp="1590767924181" />
     <state x="732" y="-949" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774047069" />
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1591864439513" />
     <state x="0" y="0" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590920375357">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
@@ -152,46 +156,46 @@
     </state>
     <state x="1084" y="124" key="FileChooserDialogImpl/0.0.1707.920/384.-1080.1920.1040@0.0.1707.920" timestamp="1590767986052" />
     <state x="1084" y="124" key="FileChooserDialogImpl/0.0.1707.920@0.0.1707.920" timestamp="1591342432791" />
-    <state width="1663" height="299" key="GridCell.Tab.0.bottom" timestamp="1591168915202">
+    <state width="1663" height="242" key="GridCell.Tab.0.bottom" timestamp="1591864450249">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.0.bottom/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069796" />
-    <state width="1663" height="299" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1591168915202" />
-    <state width="1663" height="299" key="GridCell.Tab.0.center" timestamp="1591168915201">
+    <state width="1663" height="242" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1591864450249" />
+    <state width="1663" height="242" key="GridCell.Tab.0.center" timestamp="1591864450249">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.0.center/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069796" />
-    <state width="1663" height="299" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1591168915201" />
-    <state width="1663" height="299" key="GridCell.Tab.0.left" timestamp="1591168915201">
+    <state width="1663" height="242" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1591864450249" />
+    <state width="1663" height="242" key="GridCell.Tab.0.left" timestamp="1591864450249">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.0.left/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069796" />
-    <state width="1663" height="299" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1591168915201" />
-    <state width="1663" height="299" key="GridCell.Tab.0.right" timestamp="1591168915202">
+    <state width="1663" height="242" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1591864450249" />
+    <state width="1663" height="242" key="GridCell.Tab.0.right" timestamp="1591864450249">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.0.right/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069796" />
-    <state width="1663" height="299" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1591168915202" />
-    <state width="1663" height="299" key="GridCell.Tab.1.bottom" timestamp="1591001858270">
+    <state width="1663" height="242" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1591864450249" />
+    <state width="1663" height="299" key="GridCell.Tab.1.bottom" timestamp="1591864394420">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.bottom/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069797" />
-    <state width="1663" height="299" key="GridCell.Tab.1.bottom/0.0.1707.920@0.0.1707.920" timestamp="1591001858270" />
-    <state width="1663" height="299" key="GridCell.Tab.1.center" timestamp="1591001858270">
+    <state width="1663" height="299" key="GridCell.Tab.1.bottom/0.0.1707.920@0.0.1707.920" timestamp="1591864394420" />
+    <state width="1663" height="299" key="GridCell.Tab.1.center" timestamp="1591864394420">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.center/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069797" />
-    <state width="1663" height="299" key="GridCell.Tab.1.center/0.0.1707.920@0.0.1707.920" timestamp="1591001858270" />
-    <state width="1663" height="299" key="GridCell.Tab.1.left" timestamp="1591001858270">
+    <state width="1663" height="299" key="GridCell.Tab.1.center/0.0.1707.920@0.0.1707.920" timestamp="1591864394420" />
+    <state width="1663" height="299" key="GridCell.Tab.1.left" timestamp="1591864394420">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.left/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069797" />
-    <state width="1663" height="299" key="GridCell.Tab.1.left/0.0.1707.920@0.0.1707.920" timestamp="1591001858270" />
-    <state width="1663" height="299" key="GridCell.Tab.1.right" timestamp="1591001858270">
+    <state width="1663" height="299" key="GridCell.Tab.1.left/0.0.1707.920@0.0.1707.920" timestamp="1591864394420" />
+    <state width="1663" height="299" key="GridCell.Tab.1.right" timestamp="1591864394420">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state width="1877" height="347" key="GridCell.Tab.1.right/0.0.1707.920/384.-1080.1920.1040@384.-1080.1920.1040" timestamp="1590774069797" />
-    <state width="1663" height="299" key="GridCell.Tab.1.right/0.0.1707.920@0.0.1707.920" timestamp="1591001858270" />
+    <state width="1663" height="299" key="GridCell.Tab.1.right/0.0.1707.920@0.0.1707.920" timestamp="1591864394420" />
     <state x="-288" y="-1999" key="SettingsEditor" timestamp="1591379486111">
       <screen x="-820" y="-2160" width="2560" height="1400" />
     </state>
@@ -204,6 +208,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CANet$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1590774052796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/CANet$baseline.coverage" NAME="baseline Coverage Results" MODIFIED="1591168913894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CANet$baseline.coverage" NAME="baseline Coverage Results" MODIFIED="1591864431535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

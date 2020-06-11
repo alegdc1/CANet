@@ -296,7 +296,7 @@ def main_worker(gpu, args):
             result_list = [acc_dr, acc_dme, acc_joint]
             result_list += other_results
             result_list += [se, sp]
-            save_result_txt(savedir, result_list)
+            save_result_txt(./exp/MESSIDOR/multi_CAN_lamda25_noshare_wpre_simpleaug_10fold1_1000/, result_list)
 
             print("time", time.time() - a)
             return
@@ -346,8 +346,8 @@ def main_worker(gpu, args):
 
                 is_best_acc = acc_dr >= best_accdr
                 best_accdr = max(acc_dr, best_accdr)
-                print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme))
-
+                print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme)) 
+                save_checkpoint(model.state_dict(), is_best_acc, filename='checkpoint.pth.tar', save_dir='file')
 
 def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args):
     batch_time = AverageMeter()

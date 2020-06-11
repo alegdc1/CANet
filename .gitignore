@@ -2,3 +2,6 @@ data/Base*
 pretrain/*
 __pycache__
 file/*
+exp/*
+messidor_scripts/qsub_output/*
+runs/*

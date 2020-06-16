@@ -306,13 +306,15 @@ def main_worker(gpu, args):
     #
     from lr_scheduler import LRScheduler
     lr_scheduler = LRScheduler(optimizer, len(train_loader), args)
-
+    print('5')
     for epoch in range(args.start_epoch, args.epochs):
+        print("starting epoch: ", epoch )
         is_best = False
         is_best_auc = False
         is_best_acc = False
         # train for one epoch
         loss_train = train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args)
+        print('6')
         writer.add_scalar('Train loss', loss_train, epoch)
 
         # evaluate on validation set

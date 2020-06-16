@@ -347,7 +347,7 @@ def main_worker(gpu, args):
                 is_best_acc = acc_dr >= best_accdr
                 best_accdr = max(acc_dr, best_accdr)
                 print("epoch {0}: accuracy: {1}\t acc_dme: {2}".format(epoch, acc_dr, acc_dme)) 
-                save_checkpoint(model.state_dict(), is_best_acc, filename='checkpoint.pth.tar', save_dir='file')
+                save_checkpoint(epoch, model, optimizer, is_best_acc, filename='checkpoint.pth.tar', save_dir='file')
 
 def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args):
     batch_time = AverageMeter()
@@ -526,7 +526,7 @@ def softmax(x):
     return e_x / e_x.sum(axis=0)  # only difference
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', save_dir='file'):
+def save_checkpoint(epoch, model, optimizer, is_best, filename='checkpoint.pth.tar', save_dir='file'):
     root = save_dir + "/"
     if not os.path.exists(root):
         os.makedirs(root)
@@ -534,7 +534,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', save_dir='fil
     torch.save({
         'epoch': epoch,
         'model_state_dict': model.module.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict()}, 'checkpoint.pth')
+        'optimizer_state_dict': optimizer.state_dict()}, filename)
 
 
 def save_result2txt(savedir, all_output_dme, all_output, all_target_dme, all_target):

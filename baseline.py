@@ -262,19 +262,19 @@ def main_worker(gpu, args):
     val_dataset = traindataset(root=args.data, mode='val',
                                transform=tra_test, num_class=args.num_class,
                                multitask=args.multitask, args=args)
-
+    print('1')
     train_dataset = traindataset(root=args.data, mode='train', transform=tra, num_class=args.num_class,
                                  multitask=args.multitask, args=args)
-
+    print('2')
     val_loader = torch.utils.data.DataLoader(
         val_dataset,
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
-
+    print('3')
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True, worker_init_fn=worker_init_fn)
-
+    print('4')
     if args.evaluate:
         a = time.time()
         # savedir = args.resume.replace("model_converge.pth.tar","")
@@ -530,7 +530,11 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar', save_dir='fil
     root = save_dir + "/"
     if not os.path.exists(root):
         os.makedirs(root)
-    torch.save(state, root + filename)
+    # torch.save(state, root + filename)
+    torch.save({
+        'epoch': epoch,
+        'model_state_dict': model.module.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict()}, filename)
 
 
 def save_result2txt(savedir, all_output_dme, all_output, all_target_dme, all_target):

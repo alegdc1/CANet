@@ -470,6 +470,7 @@ class ResNet(nn.Module):
                 out = self.classifier3(out)
             return out
 
+print(ResNet)
 
 def resnet18(pretrained=False, **kwargs):
     """Constructs a ResNet-18 model.

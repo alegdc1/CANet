@@ -535,8 +535,8 @@ def save_checkpoint(epoch, model, optimizer, is_best, filename='checkpoint.pth.t
     # torch.save(state, root + filename)
     torch.save({
         'epoch': epoch,
-        'model_state_dict': model.module.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict()}, filename)
+        'state_dict': model.state_dict(),
+        'optimizer': optimizer.state_dict()}, filename)
 
 
 def save_result2txt(savedir, all_output_dme, all_output, all_target_dme, all_target):

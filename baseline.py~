@@ -288,7 +288,7 @@ def main_worker(gpu, args):
             print("time", time.time() - a)
             return
         else:
-            #print('validate?')
+            print('validate?')
             acc_dr, acc_dme, acc_joint, other_results, se, sp = validate(val_loader, model, args)
             
             print("acc_dr, acc_dme, acc_joint", acc_dr, acc_dme, acc_joint)

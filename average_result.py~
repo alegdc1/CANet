@@ -33,8 +33,8 @@ for i in range(len(filelist)):
 
 mean = np.mean(whole_metric, axis=0)*100
 std = np.std(whole_metric, axis=0)*100
-print ("whole metric:", whole_metric)
-print ("mean", mean)
+print (whole_metric)
+print (mean)
 ci95 = 1.96 * std / np.sqrt(10 + 1)
 # print (mean[:11]*100)
 

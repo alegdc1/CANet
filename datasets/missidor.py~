@@ -35,10 +35,10 @@ class traindataset(data.Dataset):
         xls_files = glob.glob(self.root + '/*/*.xls')
         dictLabels_DR, dictLabels_DME = self.load_csv(xls_files)
 
-        
+        print(os.getcwd())	
         files = np.loadtxt("./data/file_list.txt", dtype=str)
         idx = np.loadtxt("./data/10fold/"+str(args.fold_name)+".txt", dtype=int)
-        
+        print ("foldname", args.fold_name)
         # idx = [428, 42, 336, 1068, 246, 790, 157, 987, 96, 1176, 1084, 99, 718, 1143,
         #        1139, 175, 417, 1112, 736, 474, 643, 106, 521, 1142, 668, 971, 377, 580,
         #        383, 688, 431, 49, 346, 1198, 773, 62, 1183, 60, 644, 191, 945, 939, 48,
@@ -99,7 +99,7 @@ class traindataset(data.Dataset):
                     print('=> Total Train: ', len(self.train_data), " DME images ")
 
         elif self.mode == 'val':
-            #print(self.test_root)
+            print(self.test_root)
             # self.test_root = [item.replace("/medical/", "/Documents/datasets/medical/") for item in self.test_root]
 
             for item in self.test_root:

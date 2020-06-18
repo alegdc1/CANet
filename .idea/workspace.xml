@@ -26,13 +26,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bfea584b-0aad-4cc2-b742-1001737161ee" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/datasets/ODIR.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baseline.py" beforeDir="false" afterPath="$PROJECT_DIR$/baseline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/missidor.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/missidor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -120,7 +128,7 @@
       <workItem from="1591003097855" duration="7617000" />
       <workItem from="1591260815824" duration="11470000" />
       <workItem from="1591800122619" duration="16311000" />
-      <workItem from="1592331682187" duration="5721000" />
+      <workItem from="1592331682187" duration="10188000" />
     </task>
     <servers />
   </component>
@@ -200,6 +208,10 @@
     </state>
     <state x="-288" y="-1999" key="SettingsEditor/0.0.1707.920/-820.-2160.2560.1400@-820.-2160.2560.1400" timestamp="1591379486111" />
     <state x="355" y="106" key="SettingsEditor/0.0.1707.920/384.-1080.1920.1040@0.0.1707.920" timestamp="1590768029495" />
+    <state x="560" y="63" width="628" height="795" key="find.popup" timestamp="1592466948730">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="560" y="63" width="628" height="795" key="find.popup/0.0.1707.920@0.0.1707.920" timestamp="1592466948730" />
     <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1590767947793">
       <screen x="0" y="0" width="1707" height="920" />
     </state>

@@ -36,7 +36,7 @@ class traindataset(data.Dataset):
         dictLabels_DR, dictLabels_DME = self.load_csv(xls_files)
 
 
-        files = np.loadtxt(self.root + "file_list.txt", dtype=str)
+        files = np.loadtxt("/data/file_list.txt", dtype=str)
         idx = np.loadtxt(self.root + "/10fold/"+str(args.fold_name)+".txt", dtype=int)
         print ("foldname", args.fold_name)
         # idx = [428, 42, 336, 1068, 246, 790, 157, 987, 96, 1176, 1084, 99, 718, 1143,

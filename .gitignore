@@ -5,3 +5,4 @@ file/*
 exp/*
 messidor_scripts/qsub_output/*
 runs/*
+data/ODIR/*

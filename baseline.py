@@ -253,6 +253,8 @@ def main_worker(gpu, args):
         from datasets.drdme_dataset import traindataset
     elif args.dataset == "missidor":
         from datasets.missidor import traindataset
+    elif args.dataset == "ODIR":
+        from datasets.ODIR import traindataset
     elif args.dataset == "kaggle":
         from datasets.kaggle import traindataset
     else:
@@ -328,6 +330,15 @@ def main_worker(gpu, args):
                 is_best = acc_dr >= best_acc1
                 best_acc1 = max(acc_dr, best_acc1)
                 print("epoch {0}: accuracy: {1}\t auc: {2}".format(epoch, acc_dr, auc_dr))
+            elif args.dataset == "ODIR":
+                #todo print precision
+                acc, auc, precision = validate(val_loader, model, args)
+                writer.add_scalar("Val acc", acc, epoch)
+                writer.add_scalar("Val auc", auc, epoch)
+                is_best = acc >= best_acc1
+                best_acc1 = max(acc, best_acc1)
+                print("epoch {0}: accuracy: {1}\t auc: {2}".format(epoch, acc, auc))
+                save_checkpoint(epoch, model, optimizer, is_best_acc, filename='checkpoint.pth.tar', save_dir='file')
             elif not args.multitask:
                 acc, auc, precision, recall, f1 = validate(val_loader, model, args)
                 writer.add_scalar("Val acc_dr", acc, epoch)
@@ -462,7 +473,13 @@ def validate(val_loader, model, args):
         auc_dr = multi_class_auc(all_target, all_output, num_c=5)
 
         return acc_dr, auc_dr
-
+    elif args.dataset == "ODIR":
+        all_output = [item for sublist in all_output for item in sublist]
+        all_target = [item for sublist in all_target for item in sublist]
+        acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
+        auc = multi_class_auc(all_target, all_output, num_c=8)
+        precision = precision_score(all_target, np.argmax(all_output, axis=1))
+        return acc, auc, precision
     elif not args.multitask:
         all_target = [item for sublist in all_target for item in sublist]
         all_output = [item for sublist in all_output for item in sublist]

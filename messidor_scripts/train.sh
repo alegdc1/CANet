@@ -12,4 +12,4 @@ conda activate cutmix
 # ... maybe other stuff here ...
  
 # Now, you should use -u to get unbuffered output and "$@" for any arguments
-sh train_fold.sh
+sh train_ODIR.sh

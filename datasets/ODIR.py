@@ -35,11 +35,11 @@ class traindataset(data.Dataset):
         xls_files = glob.glob(self.root + '/*/*.xls')
         dictLabels = self.load_csv(xls_files)
 
-        #todo generate file_list of all left/right images in dataset
+        # todo generate file_list of all left/right images in dataset
         files = np.loadtxt(self.root + "file_list.txt", dtype=str)
 
-        #todo generate the folds
-        #idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
+        # todo generate the folds
+        # idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
 
         # test only with 3 images for now
         idx = np.random.choice(range(7000), 3, replace=False)
@@ -66,21 +66,19 @@ class traindataset(data.Dataset):
                     continue
 
                 # create network input (train data, label)
-                if self.multitask:
-                    #dictLabels = {"N" : ['/data/1_right.tif', '']}
-                    labels = [k for k, v in dictLabels.items() if each_one.split("/")[-1] in v]
+                # dictLabels = {"N" : ['/data/1_right.tif', '']}
+                labels = [k for k, v in dictLabels.items() if each_one.split("/")[-1] in v]
 
-                    # labels = {"G", "C", "A"}
-                    label_vector = self.to_one_hot_vector(labels)
+                # labels = {"G", "C", "A"}
+                label_vector = self.to_one_hot_vector(labels)
 
-                    self.train_label.append(label_vector)
+                self.train_label.append(label_vector)
 
                 self.train_data.append(img)
                 self.name.append(each_one.split("/")[-1])
             assert len(self.train_label) == len(self.train_data)
 
-            if self.multitask:
-                print('=> Total Train: ', len(self.train_data), " Multi-Task images ")
+            print('=> Total Train: ', len(self.train_data), " ODIR images ")
 
         elif self.mode == 'val':
             # print(self.test_root)
@@ -93,25 +91,19 @@ class traindataset(data.Dataset):
                 if item in self.ignored_images:
                     continue
 
-                if self.multitask:
-                    # dictLabels = {"N" : ['/data/1_right.tif', '']}
-                    labels = [k for k, v in dictLabels.items() if item.split("/")[-1] in v]
+                # dictLabels = {"N" : ['/data/1_right.tif', '']}
+                labels = [k for k, v in dictLabels.items() if item.split("/")[-1] in v]
 
-                    # labels = {"G", "C", "A"}
-                    label_vector = self.to_one_hot_vector(labels)
+                # labels = {"G", "C", "A"}
+                label_vector = self.to_one_hot_vector(labels)
 
-                    self.test_label.append(label_vector)
+                self.test_label.append(label_vector)
 
                 self.test_data.append(img)
                 self.name.append(item.split("/")[-1])
             assert len(self.test_data) == len(self.test_label)
-            if self.multitask:
-                print('=> Total Test: ', len(self.test_data), " Multi-Task images ")
-            else:
-                if self.num_class == 2:
-                    print('=> Total Test: ', len(self.test_data), " DR images ")
-                else:
-                    print('=> Total Test: ', len(self.test_data), " DME images ")
+
+            print('=> Total Test: ', len(self.test_data), " ODIR images ")
 
     def to_one_hot_vector(self, label_set):
         label_vector = np.zeros(8)
@@ -193,7 +185,7 @@ class traindataset(data.Dataset):
         if flag and ("N" in labels):
             labels.remove("N")
 
-        #if ("D" in labels) or ("G" in labels) or ("C" in labels) or ("A" in labels) or ("H" in labels) or ("M" in labels) or ("O" in labels) and ("N" in labels):
+        # if ("D" in labels) or ("G" in labels) or ("C" in labels) or ("A" in labels) or ("H" in labels) or ("M" in labels) or ("O" in labels) and ("N" in labels):
         #   labels.remove("N")
 
         return ignore_image, labels

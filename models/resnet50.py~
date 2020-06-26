@@ -469,7 +469,7 @@ class ResNet(nn.Module):
             elif self.num_classes == 5:
                 out = self.classifier3(out)
             elif self.num_classes == 8:
-                out = self.classifier1(out)
+            	out = self.classifier1(out)
             return out
 
 print(ResNet)

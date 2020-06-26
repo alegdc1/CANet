@@ -38,14 +38,14 @@ class traindataset(data.Dataset):
         # todo generate file_list of all left/right images in dataset
         files = np.loadtxt(self.root + "file_list.txt", dtype=str)
         # only take first 100 train images
-        files = files[0:198]
+        files = files[0:192]
 
         # todo generate the folds
         # idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
 
         # test only with 3 images for now
         #idx = np.random.choice(range(7000), 3, replace=False)
-        idx = range(0,18)
+        idx = range(0,12)
 
         self.test_root = [files[idx_item] for idx_item in idx]
         self.train_root = list(set(files) - set(self.test_root))

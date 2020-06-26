@@ -71,8 +71,9 @@ class traindataset(data.Dataset):
         if self.mode =='train':
             # self.train_root = [item.replace("/medical/", "/Documents/datasets/medical/") for item in self.train_root]
             for each_one in self.train_root:
-                img = Image.open(each_one)
-                img = img.convert('RGB')
+                #img = Image.open(each_one)
+                #img = img.convert('RGB') 
+                
                 if self.multitask:
                     label_DR = [k for k, v in dictLabels_DR.items() if each_one.split("/")[-1] in v]
                     label_DME = [k for k, v in dictLabels_DME.items() if each_one.split("/")[-1] in v]
@@ -86,7 +87,7 @@ class traindataset(data.Dataset):
 
                 assert len(label_DR) == 1
                 # label_DME = [k for k, v in dictLabels_DME.items() if each_one.split("/")[-1][:-4] in v]
-                self.train_data.append(img)
+                self.train_data.append(each_one)
                 self.name.append(each_one.split("/")[-1])
             assert len(self.train_label) == len(self.train_data)
 
@@ -103,8 +104,8 @@ class traindataset(data.Dataset):
             # self.test_root = [item.replace("/medical/", "/Documents/datasets/medical/") for item in self.test_root]
 
             for item in self.test_root:
-                img = Image.open(item)
-                img = img.convert('RGB')
+                #img = Image.open(item)
+                #img = img.convert('RGB')
                 if self.multitask:
                     label_DR = [k for k, v in dictLabels_DR.items() if item.split("/")[-1] in v]
                     label_DME = [k for k, v in dictLabels_DME.items() if item.split("/")[-1] in v]
@@ -116,7 +117,7 @@ class traindataset(data.Dataset):
                         label_DR = [k for k, v in dictLabels_DME.items() if item.split("/")[-1] in v]
                     self.test_label.append(int(label_DR[0]))
                 assert len(label_DR) == 1
-                self.test_data.append(img)
+                self.test_data.append(item)
                 self.name.append(item.split("/")[-1])
             assert len(self.test_data) == len(self.test_label)
             if self.multitask:
@@ -177,10 +178,12 @@ class traindataset(data.Dataset):
 
 
         if self.mode == 'train':
-            img, label , name  = self.train_data[index], self.train_label[index], self.name[index]
+            img_file, label , name  = self.train_data[index], self.train_label[index], self.name[index]
         elif self.mode == 'val':
-            img, label , name = self.test_data[index], self.test_label[index], self.name[index]
+            img_file, label , name = self.test_data[index], self.test_label[index], self.name[index]
 
+        img = Image.open(img_file)
+        img = img.convert('RGB')
         img = self.transform(img)
 
 

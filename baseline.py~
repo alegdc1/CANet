@@ -158,11 +158,16 @@ def main_worker(gpu, args):
 
     torch.cuda.set_device(args.gpu)
     model = model.cuda(args.gpu)
-
+    #model = model()
+    #model.cuda()
     print('    Total params: %.2fM' % (sum(p.numel() for p in model.parameters()) / 1000000.0))
 
-    # define loss function (criterion) and optimizer
-    criterion = nn.CrossEntropyLoss().cuda(args.gpu)
+    # define loss function (criterion)
+    if args.dataset == "ODIR":
+        criterion = nn.MultiLabelSoftMarginLoss().cuda(args.gpu)
+    else:
+        criterion = nn.CrossEntropyLoss().cuda(args.gpu)
+    # define optimizer
     if args.adam:
         optimizer = torch.optim.Adam(model.parameters(), args.base_lr, weight_decay=args.weight_decay)
     else:
@@ -332,7 +337,7 @@ def main_worker(gpu, args):
                 best_acc1 = max(acc_dr, best_acc1)
                 print("epoch {0}: accuracy: {1}\t auc: {2}".format(epoch, acc_dr, auc_dr))
             elif args.dataset == "ODIR":
-                #todo print precision
+                #Todo für ODIR anpassen
                 acc, auc, precision = validate(val_loader, model, args)
                 writer.add_scalar("Val acc", acc, epoch)
                 writer.add_scalar("Val auc", auc, epoch)
@@ -388,7 +393,8 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
         if args.multitask:
             target = [item.cuda(args.gpu, non_blocking=True) for item in target]
         else:
-            target = target.cuda(args.gpu, non_blocking=True)
+            target = [item.cuda(args.gpu, non_blocking=True) for item in target]            
+            #target = target.cuda(args.gpu, non_blocking=True)
 
         # compute output
         output = model(input)
@@ -404,16 +410,10 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
         else:
             print("Output is ", output)
             print("Target is ", target)
-            loss1 = criterion(output[0], target[0])
-            loss2 = criterion(output[1], target[1])
-            loss3 = criterion(output[2], target[2])
-            loss4 = criterion(output[3], target[3])
-            loss5 = criterion(output[4], target[4])
-            loss6 = criterion(output[5], target[5])
-            loss7 = criterion(output[6], target[6])
-            loss8 = criterion(output[7], target[7])
+            loss1 = criterion(output[0].double(), target[0].double())
+            #loss2 = criterion(output[1].double(), target[1].double())
             
-            loss= (loss1 + loss2 + loss3 + loss4 + loss5 + loss6 + loss7 + loss8)
+            loss = (loss1)
             
             
 
@@ -442,25 +442,25 @@ def validate(val_loader, model, args):
     
     all_target = []
     all_target_dme = []
-    all_target_N = []
-    all_target_D = []
-    all_target_G = []
-    all_target_C = []
-    all_target_A = []
-    all_target_H = []
-    all_target_M = []
-    all_target_O = []
+    #all_target_N = []
+    #all_target_D = []
+    #all_target_G = []
+    #all_target_C = []
+    #all_target_A = []
+    #all_target_H = []
+    #all_target_M = []
+    #all_target_O = []
     all_output = []
     all_name = []
     all_output_dme = []
-    all_output_N = []
-    all_output_D = []
-    all_output_G = []
-    all_output_C = []
-    all_output_A = []
-    all_output_H = []
-    all_output_M = []
-    all_output_O = []
+    #all_output_N = []
+    #all_output_D = []
+    #all_output_G = []
+    #all_output_C = []
+    #all_output_A = []
+    #all_output_H = []
+    #all_output_M = []
+    #all_output_O = []
     
     
     with torch.no_grad():
@@ -484,37 +484,13 @@ def validate(val_loader, model, args):
             if args.dataset == "ODIR":
                 output0 = output[0]
                 output1 = output[1]
-                output2 = output[2]
-                output3 = output[3]
-                output4 = output[4]
-                output5 = output[5]
-                output6 = output[6]
-                output7 = output[7]
-                output0 = torch.softmax(output0, dim=1)
-                output1 = torch.softmax(output1, dim=1)
-                output2 = torch.softmax(output2, dim=1)
-                output3 = torch.softmax(output3, dim=1)
-                output4 = torch.softmax(output4, dim=1)
-                output5 = torch.softmax(output5, dim=1)
-                output6 = torch.softmax(output6, dim=1)
-                output7 = torch.softmax(output7, dim=1)
+                #output0 = torch.softmax(output0, dim=1)
+                #output1 = torch.softmax(output1, dim=1)
 
-                all_target_N.append(target[0].cpu().data.numpy())
-                all_output_N.append(output0.cpu().data.numpy())
-                all_target_D.append(target[1].cpu().data.numpy())
-                all_output_D.append(output1.cpu().data.numpy())
-                all_target_G.append(target[2].cpu().data.numpy())
-                all_output_G.append(output2.cpu().data.numpy())
-                all_target_C.append(target[3].cpu().data.numpy())
-                all_output_C.append(output3.cpu().data.numpy())
-                all_target_A.append(target[4].cpu().data.numpy())
-                all_output_A.append(output4.cpu().data.numpy())
-                all_target_H.append(target[5].cpu().data.numpy())
-                all_output_H.append(output5.cpu().data.numpy())
-                all_target_M.append(target[6].cpu().data.numpy())
-                all_output_M.append(output6.cpu().data.numpy())
-                all_target_O.append(target[7].cpu().data.numpy())
-                all_output_O.append(output7.cpu().data.numpy())
+                all_target.append(target[0].cpu().data.numpy())
+                all_output.append(output0.cpu().data.numpy())
+                all_target_dme.append(target[1].cpu().data.numpy())
+                all_output_dme.append(output1.cpu().data.numpy())
                                     
             elif args.multitask:
                 output0 = output[0]
@@ -540,17 +516,24 @@ def validate(val_loader, model, args):
         auc_dr = multi_class_auc(all_target, all_output, num_c=5)
 
         return acc_dr, auc_dr
-    elif args.dataset == "ODIR": 
+    elif args.dataset == "ODIR":
+    	
+        print('all_output is:', all_output)
+        print('all_target is:', all_target)  
         all_output = [item for sublist in all_output for item in sublist]
         all_target = [item for sublist in all_target for item in sublist]
-        acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
-        auc = multi_class_auc(all_target, all_output, num_c=8)
-        precision = precision_score(all_target, np.argmax(all_output, axis=1))
+        
+        #TODO threshold all_output with zeros (or with a sigmoid function at .5)
+        #TODO f1 score
+        calc_acc_pr_f1_overall(all_output, all_target)
+        #acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
+        #auc = multi_class_auc(all_target, all_output, num_c=8)
+        #precision = precision_score(all_target, np.argmax(all_output, axis=1))
         return acc, auc, precision
     elif not args.multitask:
         all_target = [item for sublist in all_target for item in sublist]
         all_output = [item for sublist in all_output for item in sublist]
-
+        
         if args.num_class == 2:
             acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
             auc = roc_auc_score(all_target, [item[1] for item in all_output])
@@ -616,6 +599,19 @@ def validate(val_loader, model, args):
                [auc_dr, auc_dme, precision_dr, precision_dme, recall_dr, recall_dme, f1score_dr, f1score_dme], \
                sensitivity1, specificity1
 
+def calc_acc_pr_f1_overall(y_true, y_pred):
+
+    true = y_true
+    pred = y_pred
+
+    true[true == -1.] = 0
+
+    precision = precision_score(true, pred)
+    recall = recall_score(true, pred)
+    accuracy = accuracy_score(true, pred)
+    f1 = f1_score(true, pred)
+
+    return precision, recall, accuracy, f1
 
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""

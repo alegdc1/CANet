@@ -7,6 +7,9 @@
       <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="d92d9f58-99b1-46ac-b830-b673226e4bf9" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
       <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="8be5b5ca-756a-48e0-b5d3-877b9bf26b2d" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
       <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="e1ac6bd9-3b39-4a9b-b5ca-b4e656c75102" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="70f39c80-2ed3-47a2-ac88-7c61ecc75fac" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="4a01d2db-8e8a-4937-847b-29e9b22ff485" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
+      <sshConfig authType="PASSWORD" host="hpc4.cse.cuhk.edu.hk" id="f01be48c-6d9a-4ab4-b13b-522e5eb3b225" port="22" customName="hpc4.cse.cuhk.edu.hk" nameFormat="CUSTOM" />
     </configs>
   </component>
 </project>

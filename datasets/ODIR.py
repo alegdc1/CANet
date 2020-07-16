@@ -12,10 +12,11 @@ import glob
 import xlrd
 import numpy as np
 import scipy.misc
+import pdb
 
 
 class traindataset(data.Dataset):
-    def __init__(self, root, mode, transform=None, num_class=8, multitask=False, args=None):
+    def __init__(self, root, mode, transform=None, num_class=1, multitask=False, args=None):
         self.root = "./data/ODIR/"
         self.transform = transform
         self.mode = mode
@@ -81,6 +82,7 @@ class traindataset(data.Dataset):
             assert len(self.train_label) == len(self.train_data)
 
             print('=> Total Train: ', len(self.train_data), " ODIR images ")
+            pdb.set_trace()
 
         elif self.mode == 'val':
             # print(self.test_root)
@@ -126,11 +128,12 @@ class traindataset(data.Dataset):
             label_vector[6] = 1
         if "O" in label_set:
             label_vector[7] = 1
-
+        #pdb.set_trace()
         return label_vector
-
+        
     @staticmethod
     def extract_labels(input_label):
+        pdb.set_trace()
         inputs = input_label.split(",")
 
         ignored_labels = ["lens dust"]

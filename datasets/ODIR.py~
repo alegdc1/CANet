@@ -12,10 +12,11 @@ import glob
 import xlrd
 import numpy as np
 import scipy.misc
+import pdb
 
 
 class traindataset(data.Dataset):
-    def __init__(self, root, mode, transform=None, num_class=8, multitask=False, args=None):
+    def __init__(self, root, mode, transform=None, num_class=1, multitask=False, args=None):
         self.root = "./data/ODIR/"
         self.transform = transform
         self.mode = mode
@@ -38,14 +39,14 @@ class traindataset(data.Dataset):
         # todo generate file_list of all left/right images in dataset
         files = np.loadtxt(self.root + "file_list.txt", dtype=str)
         # only take first 100 train images
-        files = files[0:192]
+        files = files[0:198]
 
         # todo generate the folds
         # idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
 
         # test only with 3 images for now
         #idx = np.random.choice(range(7000), 3, replace=False)
-        idx = range(0,12)
+        idx = range(0,18)
 
         self.test_root = [files[idx_item] for idx_item in idx]
         self.train_root = list(set(files) - set(self.test_root))
@@ -81,6 +82,7 @@ class traindataset(data.Dataset):
             assert len(self.train_label) == len(self.train_data)
 
             print('=> Total Train: ', len(self.train_data), " ODIR images ")
+            pdb.set_trace()
 
         elif self.mode == 'val':
             # print(self.test_root)
@@ -126,11 +128,12 @@ class traindataset(data.Dataset):
             label_vector[6] = 1
         if "O" in label_set:
             label_vector[7] = 1
-
+        #pdb.set_trace()
         return label_vector
-
+        
     @staticmethod
     def extract_labels(input_label):
+        pdb.set_trace()
         inputs = input_label.split(",")
 
         ignored_labels = ["lens dust"]

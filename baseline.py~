@@ -332,8 +332,8 @@ def main_worker(gpu, args):
         writer.add_scalar('Train loss', loss_train, epoch)
 
         # evaluate on validation set
-
-        if epoch % 20 == 0:
+        #TODO reset number to 20
+        if epoch % 1 == 0:
             if args.dataset == "kaggle":
                 acc_dr, auc_dr = validate(val_loader, model, args)
                 writer.add_scalar("Val acc_dr", acc_dr, epoch)
@@ -385,6 +385,7 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
     end = time.time()
 
     for i, (input, target, name) in enumerate(train_loader):
+        #pdb.set_trace()
         # measure data loading time
         data_time.update(time.time() - end)
         lr = lr_scheduler.update(i, epoch)
@@ -413,8 +414,7 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
             else:
                 loss = (loss1 + loss2)
         else:
-            #print("Output is ", output)
-            #print("Target is ", target)
+            pdb.set_trace()
             loss1 = criterion(output[0].double(), target[0].double())
             #loss2 = criterion(output[1].double(), target[1].double())
             
@@ -490,11 +490,11 @@ def validate(val_loader, model, args):
                 output1 = output[1]
                 #output0 = torch.softmax(output0, dim=1)
                 #output1 = torch.softmax(output1, dim=1)
-                print("targetsize", target.size())
+                #print("targetsize", target.size())
                 #all_target.append(target[0].cpu().data.numpy())
                 all_target.append(target.cpu().data.numpy())
-                pdb.set_trace()
-                print("output0.cpu().data.numpy():", output0.cpu().data.numpy())
+                #pdb.set_trace()
+                #print("output0.cpu().data.numpy():", output0.cpu().data.numpy())
                 all_output.append(output0.cpu().data.numpy())
                 #all_target_dme.append(target[1].cpu().data.numpy())
                 #all_output_dme.append(output1.cpu().data.numpy())
@@ -525,24 +525,22 @@ def validate(val_loader, model, args):
         return acc_dr, auc_dr
     elif args.dataset == "ODIR":
     	
-        print('all_output is:', all_output)
-        print('all_target is:', all_target)
-        print('all_output[0] is:', all_output[0])
         all_output = [item for sublist in all_output for item in sublist]
         all_target = [item for sublist in all_target for item in sublist]
 
         all_output = np.array(all_output)
         all_target = np.array(all_target)        
-        
-        print("shape of all_output is:", np.shape(all_output))
-        print("shape of all_target is:", np.shape(all_target))
-        print("Type of all_output is:", type(all_output))
-        print("Type of all_target is:", type(all_target))
         #TODO threshold all_output with zeros (or with a sigmoid function at .5)
-        #TODO f1 score
-        #threshold = nn.Threshold(0, 1)
+        
+        
 
-        m = all_output > 0
+        #m = all_output > 0
+        
+        m = torch.sigmoid(torch.from_numpy(all_output))
+        print("all_traget", all_target)
+        print("sigmoid of all_output:", m)
+        m = m > 0.5
+        #pdb.set_trace()
         precision, recall, accuracy, f1 = calc_acc_pr_f1_overall(m, all_target)
         
         

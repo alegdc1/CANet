@@ -11,7 +11,7 @@ import glob
 import xlrd
 import numpy as np
 import scipy.misc
-
+import pdb
 
 
 class traindataset(data.Dataset):
@@ -148,6 +148,7 @@ class traindataset(data.Dataset):
                     label1 = 1
 
                 if label1 in dictLabels_DR.keys():
+                    pdb.set_trace()
                     dictLabels_DR[label1].append(filename)
                 else:
                     dictLabels_DR[label1] = [filename]

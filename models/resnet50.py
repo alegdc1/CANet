@@ -193,6 +193,9 @@ class ResNet(nn.Module):
             # self.classifier2 = nn.Linear(512 * block.expansion, 3)
             self.classifier1 = nn.Linear(300, self.num_classes)
             self.classifier2 = nn.Linear(300, 3)
+        elif self.num_classes == 8:
+            #self.classifier1 = nn.Linear(512 * block.expansion, self.num_classes)
+            self.classifier1 = nn.Linear(300, self.num_classes)
         elif self.num_classes == 2:
             self.classifier1 = nn.Linear(512 * block.expansion, self.num_classes)
         elif self.num_classes == 3:

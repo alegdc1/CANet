@@ -328,7 +328,6 @@ def main_worker(gpu, args):
         is_best_acc = False
         # train for one epoch
         loss_train = train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer, args)
-        print('6')
         writer.add_scalar('Train loss', loss_train, epoch)
 
         # evaluate on validation set
@@ -414,11 +413,16 @@ def train(train_loader, model, criterion, lr_scheduler, writer, epoch, optimizer
             else:
                 loss = (loss1 + loss2)
         else:
-            pdb.set_trace()
-            loss1 = criterion(output[0].double(), target[0].double())
-            #loss2 = criterion(output[1].double(), target[1].double())
+            #pdb.set_trace()
+            loss = criterion(output.double(), torch.stack(target))
             
-            loss = (loss1)
+            print("loss:", loss)
+            print("target", torch.stack(target))
+            print("Output", output)
+            #m = output.double()
+            #a = torch.stack(target)
+            #accuracy = accuracy_score(a.cpu(), m.cpu())
+            #print ("training accuracy:" , accuracy)
             
             
 
@@ -487,17 +491,20 @@ def validate(val_loader, model, args):
             
             if args.dataset == "ODIR":
                 output0 = output[0]
-                output1 = output[1]
+                #output1 = output[1]
                 #output0 = torch.softmax(output0, dim=1)
                 #output1 = torch.softmax(output1, dim=1)
                 #print("targetsize", target.size())
                 #all_target.append(target[0].cpu().data.numpy())
                 all_target.append(target.cpu().data.numpy())
+                
                 #pdb.set_trace()
                 #print("output0.cpu().data.numpy():", output0.cpu().data.numpy())
-                all_output.append(output0.cpu().data.numpy())
+                #all_output.append(output0.cpu().data.numpy())
                 #all_target_dme.append(target[1].cpu().data.numpy())
-                #all_output_dme.append(output1.cpu().data.numpy())
+                all_output = output
+                #for i in range(0,8):
+                    #all_output = np.vstack(output[i].cpu().data.numpy())
                                     
             elif args.multitask:
                 output0 = output[0]
@@ -525,29 +532,31 @@ def validate(val_loader, model, args):
         return acc_dr, auc_dr
     elif args.dataset == "ODIR":
     	
-        all_output = [item for sublist in all_output for item in sublist]
-        all_target = [item for sublist in all_target for item in sublist]
+        #all_output = [item for sublist in all_output for item in sublist]
+        #all_target = [item for sublist in all_target for item in sublist]
 
-        all_output = np.array(all_output)
-        all_target = np.array(all_target)        
+        #all_output = np.array(all_output)
+        #all_target = np.array(all_target)        
         #TODO threshold all_output with zeros (or with a sigmoid function at .5)
         
         
 
         #m = all_output > 0
         
-        m = torch.sigmoid(torch.from_numpy(all_output))
-        print("all_traget", all_target)
-        print("sigmoid of all_output:", m)
+        # maybe torch.from_numpy
+        #pdb.set_trace()
+        m = torch.sigmoid(all_output)
         m = m > 0.5
         #pdb.set_trace()
-        precision, recall, accuracy, f1 = calc_acc_pr_f1_overall(m, all_target)
+        precision, recall, accuracy, f1 = calc_acc_pr_f1_overall(all_target[0], m.cpu())
+        print("accuracy" ,accuracy_score(all_target[0], m.cpu()))
         
         
         #acc = accuracy_score(all_target, np.argmax(all_output, axis=1))
         #auc = multi_class_auc(all_target, all_output, num_c=8)
         #precision = precision_score(all_target, np.argmax(all_output, axis=1))
         return precision, recall, accuracy, f1
+        
     elif not args.multitask:
         all_target = [item for sublist in all_target for item in sublist]
         all_output = [item for sublist in all_output for item in sublist]
@@ -626,6 +635,7 @@ def calc_acc_pr_f1_overall(y_true, y_pred):
 
     precision = precision_score(true, pred, average = 'micro')
     recall = recall_score(true, pred, average = 'micro')
+    
     accuracy = accuracy_score(true, pred)
     f1 = f1_score(true, pred, average = 'micro')
 

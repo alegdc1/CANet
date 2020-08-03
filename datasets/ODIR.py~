@@ -13,10 +13,11 @@ import xlrd
 import numpy as np
 import scipy.misc
 import pdb
+import torch
 
 
 class traindataset(data.Dataset):
-    def __init__(self, root, mode, transform=None, num_class=1, multitask=False, args=None):
+    def __init__(self, root, mode, transform=None, num_class=8, multitask=False, args=None):
         self.root = "./data/ODIR/"
         self.transform = transform
         self.mode = mode
@@ -40,13 +41,13 @@ class traindataset(data.Dataset):
         # todo generate file_list of all left/right images in dataset
         files = np.loadtxt(self.root + "file_list.txt", dtype=str)
         # only take first 100 train images
-        files = files[0:880]
+        files = files[0:16
 
         # todo generate the folds
         # idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
 
         # test only with 3 images for now
-        idx = np.random.choice(range(880), 80, replace=False)
+        idx = np.random.choice(range(16), 8, replace=False)
         #idx = range(0,18)
 
         self.test_root = [files[idx_item] for idx_item in idx]
@@ -112,24 +113,24 @@ class traindataset(data.Dataset):
             print('=> Total Test: ', len(self.test_data), " ODIR images ")
 
     def to_one_hot_vector(self, label_set):
-        label_vector = np.zeros(8, dtype=int)
+        label_vector = np.zeros(8, dtype=np.double)
 
         if "N" in label_set:
-            label_vector[0] = 1
+            label_vector[0] = 1.
         if "D" in label_set:
-            label_vector[1] = 1
+            label_vector[1] = 1.
         if "G" in label_set:
-            label_vector[2] = 1
+            label_vector[2] = 1.
         if "C" in label_set:
-            label_vector[3] = 1
+            label_vector[3] = 1.
         if "A" in label_set:
-            label_vector[4] = 1
+            label_vector[4] = 1.
         if "H" in label_set:
-            label_vector[5] = 1
+            label_vector[5] = 1.
         if "M" in label_set:
-            label_vector[6] = 1
+            label_vector[6] = 1.
         if "O" in label_set:
-            label_vector[7] = 1
+            label_vector[7] = 1.
         #pdb.set_trace()
         return label_vector
         

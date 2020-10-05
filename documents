@@ -505,20 +505,29 @@ def validate(val_loader, model, args):
             else:
                 output = torch.softmax(output, dim=1)
                 all_target.append(target.cpu().data.numpy())
-                all_output.append(output.cpu().data.numpy())
-            all_name.append(name)
+                all_output.ap
+                end(output.cpu().data.numpy())
+            all_name.append(n
+            me)
     
-    if args.dataset == "kaggle":
+    if args.dataset == "kaggl
+    ":
         
-        all_output = [item for sublist in all_output for item in sublist]
-        all_target = [item for sublist in all_target for item in sublist]
-        acc_dr = accuracy_score(all_target, np.argmax(all_output, axis=1))
-        auc_dr = multi_class_auc(all_target, all_output, num_c=5)
+        all_output = [item fo
+         sublist in all_output for item in sublist]
+        all_target = [item fo
+         sublist in all_target for item in sublist]
+        acc_dr = accuracy_sco
+        e(all_target, np.argmax(all_output, axis=1))
+        auc_dr = multi_class_
+        uc(all_target, all_output, num_c=5)
 
         return acc_dr, auc_dr
-    elif args.dataset == "ODIR":
+    elif args.dataset == "ODI
+    ":
     	
-        print('all_output is:', all_output)
+        print('all_output is:
+        , all_output)
         print('all_target is:', all_target)  
         all_output = [item for sublist in all_output for item in sublist]
         all_target = [item for sublist in all_target for item in sublist]

@@ -1,6 +1,5 @@
-import os
-import os.path
 import sys
+import pdb
 
 if sys.version_info[0] == 2:
     import cPickle as pickle
@@ -11,9 +10,6 @@ from PIL import Image
 import glob
 import xlrd
 import numpy as np
-import scipy.misc
-import pdb
-import torch
 
 
 class traindataset(data.Dataset):
@@ -27,6 +23,7 @@ class traindataset(data.Dataset):
         self.test_label = []
         self.name = []
         self.num_class = num_class
+        self.dataset = []
         self.multitask = multitask
         self.ignored_images = set()
 
@@ -35,20 +32,16 @@ class traindataset(data.Dataset):
         # self.train_root  = files
         # get file name and label
         xls_files = glob.glob(self.root + '*.xlsx')
-        #pdb.set_trace()      
         dictLabels = self.load_csv(xls_files)
-        #pdb.set_trace()
-        # todo generate file_list of all left/right images in dataset
+        # generate file_list of all left/right images in dataset
         files = np.loadtxt(self.root + "file_list.txt", dtype=str)
-        # only take first 100 train images
-        files = files[0:16]
+        # choose how many samples you want, starts at first one
+        files = files[0:7000]
 
-        # todo generate the folds
+        # generate the folds
         # idx = np.loadtxt(self.root + "/10fold/" + str(args.fold_name) + ".txt", dtype=int)
 
-        # test only with 3 images for now
-        idx = np.random.choice(range(16), 8, replace=False)
-        #idx = range(0,18)
+        idx = np.loadtxt("/scratch_net/petzi/garciaal/git/CANet/data/ODIR/valid_idces.txt", dtype='int')
 
         self.test_root = [files[idx_item] for idx_item in idx]
         self.train_root = list(set(files) - set(self.test_root))
@@ -60,32 +53,37 @@ class traindataset(data.Dataset):
         # np.savetxt("train_root.txt", self.train_root, fmt="%s")
         # np.savetxt("test_root.txt", self.test_root, fmt="%s")
         # print ("test sample", self.test_root[0])
-
+        sum_vector = np.zeros(8)
+        counter = 0
         if self.mode == 'train':
             # self.train_root = [item.replace("/medical/", "/Documents/datasets/medical/") for item in self.train_root]
             for each_one in self.train_root:
                 img_file = each_one.split("/")[-1]
 
                 # skip bad images, like "no fundus image" or "low img quality"
-                if each_one in self.ignored_images:
+                if img_file in self.ignored_images:
                     continue
-                #pdb.set_trace()
                 # create network input (train data, label)
                 # dictLabels = {"N" : ['/data/1_right.tif', '']}
                 labels = [k for k, v in dictLabels.items() if img_file in v]
-                
-                #pdb.set_trace()
+
+                # pdb.set_trace()
                 # labels = {"G", "C", "A"}
                 label_vector = self.to_one_hot_vector(labels)
-                #pdb.set_trace()
+
+                sum_vector += label_vector
+                counter += not np.any(label_vector)
                 self.train_label.append(label_vector)
-                #pdb.set_trace()
                 self.train_data.append(each_one)
                 self.name.append(img_file)
+                self.dataset.append('ODIR')
             assert len(self.train_label) == len(self.train_data)
 
             print('=> Total Train: ', len(self.train_data), " ODIR images ")
-            #pdb.set_trace()
+            print("sum_vector", sum_vector)
+            print("counter", counter)
+
+            # pdb.set_trace()
 
         elif self.mode == 'val':
             # print(self.test_root)
@@ -94,7 +92,7 @@ class traindataset(data.Dataset):
             for item in self.test_root:
                 img_file = item.split("/")[-1]
 
-                if item in self.ignored_images:
+                if img_file in self.ignored_images:
                     continue
 
                 # dictLabels = {"N" : ['/data/1_right.tif', '']}
@@ -102,15 +100,17 @@ class traindataset(data.Dataset):
 
                 # labels = {"G", "C", "A"}
                 label_vector = self.to_one_hot_vector(labels)
-
                 self.test_label.append(label_vector)
 
-                
                 self.test_data.append(item)
                 self.name.append(img_file)
             assert len(self.test_data) == len(self.test_label)
 
             print('=> Total Test: ', len(self.test_data), " ODIR images ")
+
+        # total = np.sum(sum_vector)
+        # for i in range(8):
+        #     print((1.0 / sum_vector[i]) * total / 2)
 
     def to_one_hot_vector(self, label_set):
         label_vector = np.zeros(8, dtype=np.double)
@@ -131,12 +131,12 @@ class traindataset(data.Dataset):
             label_vector[6] = 1.
         if "O" in label_set:
             label_vector[7] = 1.
-        #pdb.set_trace()
+        # pdb.set_trace()
         return label_vector
-        
-    @staticmethod  
+
+    @staticmethod
     def extract_labels(input_label):
-        #pdb.set_trace()
+        # pdb.set_trace()
         inputs = input_label.split(",")
 
         ignored_labels = ["lens dust"]
@@ -146,7 +146,7 @@ class traindataset(data.Dataset):
         labels = set()
 
         for split in inputs:
-            #pdb.set_trace()
+            # pdb.set_trace()
             if split.strip() in ignored_keywords:
                 ignore_image = True
                 break
@@ -202,7 +202,7 @@ class traindataset(data.Dataset):
     def load_csv(self, path):
 
         dictLabels = {}
-        #dictLabels = dictLabels.get(labels)
+        # dictLabels = dictLabels.get(labels)
         for per_path in path:
             # open xlsx
             xl_workbook = xlrd.open_workbook(per_path)
@@ -216,18 +216,18 @@ class traindataset(data.Dataset):
 
                 ignore_r, labels_r = self.extract_labels(label_r)
                 ignore_l, labels_l = self.extract_labels(label_l)
-                #dictLabels = dictLabels.get(label_r, label_l)
-                
-                #pdb.set_trace()
+                # dictLabels = dictLabels.get(label_r, label_l)
+
+                # pdb.set_trace()
                 if not ignore_r:
-                    #pdb.set_trace()
+                    # pdb.set_trace()
                     for label in labels_r:
-                        #pdb.set_trace()
+                        # pdb.set_trace()
                         if label in dictLabels.keys():
                             dictLabels[label].append(filename_r)
                         else:
                             dictLabels[label] = [filename_r]
-                        #pdb.set_trace()
+                        # pdb.set_trace()
                 else:
                     self.ignored_images.add(filename_r)
 
@@ -251,17 +251,18 @@ class traindataset(data.Dataset):
             tuple: (image, target) where target is index of the target class.
         """
 
+        ds = "ODIR"
         if self.mode == 'train':
-            img_file, label, name = self.train_data[index], self.train_label[index], self.name[index]
+            img_file, label, name, ds = self.train_data[index], self.train_label[index], self.name[index], self.dataset[index]
         elif self.mode == 'val':
             img_file, label, name = self.test_data[index], self.test_label[index], self.name[index]
-
         img = Image.open(img_file)
         img = img.convert('RGB')
 
         img = self.transform(img)
 
-        return img, label, name
+
+        return img, label, name, ds
 
     def __len__(self):
         if self.mode == 'train':

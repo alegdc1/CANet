@@ -3,7 +3,7 @@
 #SBATCH  --gres=gpu:1
 #SBATCH  --mem=30G
 
-source /itet-stor/garciaal/net_scratch/conda/etc/profile.d/conda.sh shell.bash hook
+source /itet-stor/garciaal/net_scratch/conda/etc/profile.d/conda.sh
 
 # From here, it's just what you executed in qrsh
 conda activate cutmix
@@ -12,15 +12,15 @@ conda activate cutmix
 
 cd ..
 	
-LR=$1
-LAMBDA=$2
-BS=$3
-EPOCHS=$4
-DEPOCH=$5
-FILE="/mlc_ODIR_10p_LR-${LR}-lm_${LAMBDA}-bs-${BS}-ep-${EPOCHS}"
+LR=1e-4
+LAMBDA=0.25
+BS=120
+EPOCHS=100
+DEPOCH=50
+FILE="/mlc_ODIR_10p_wm1_t05_EXT_LR-${LR}-lm_${LAMBDA}-bs-${BS}-ep-${EPOCHS}"
 
 
     
-python baseline.py ./data/ ODIR exp/ODIR/$FILE -a resnet50 \
+python baseline.py ./data/ ODIR_EXT exp/ODIR_EXT/$FILE -a resnet50 \
 --gpu 0 -b $BS --base_lr $LR --pretrained --epochs $EPOCHS  --decay_epoch $DEPOCH --num_class 8 --adam \
 --lambda_value $LAMBDA
